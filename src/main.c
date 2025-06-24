@@ -45,12 +45,54 @@ THE SOFTWARE.
 #include "usbd_desc.h"
 #include "usbd_gs_can.h"
 #include "util.h"
+#include "stm32g0xx_hal_tim.h"
 
 void HAL_MspInit(void);
 static void SystemClock_Config(void);
 
 static USBD_GS_CAN_HandleTypeDef hGS_CAN;
 static USBD_HandleTypeDef hUSB = {0};
+
+TIM_HandleTypeDef htim15;
+
+uint16_t freqToPeriod(float freq) {
+	float temp = 1/freq;
+	return (uint16_t) (temp * 1000000);
+}
+
+void setPWM(TIM_HandleTypeDef timer, uint32_t channel, float freq)
+{
+	HAL_TIM_PWM_Stop(&timer, channel); // stop generation of pwm
+	TIM_OC_InitTypeDef sConfigOC;
+	uint16_t per = freqToPeriod(freq);
+	uint16_t pulse = per / 2;
+	timer.Init.Period = per; // set the period duration
+	HAL_TIM_PWM_Init(&timer); // reinititialise with new period value
+	sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	sConfigOC.Pulse = pulse; // set the pulse duration
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	HAL_TIM_PWM_ConfigChannel(&timer, &sConfigOC, channel);
+	HAL_TIM_PWM_Start(&timer, channel); // start pwm generation
+}
+
+
+// static void playNote(uint16_t period, uint16_t pulse, uint16_t duration) {
+// 	setPWM(htim15, TIM_CHANNEL_1, period, pulse);
+	
+// 	HAL_Delay(duration);
+// 	setPWM(htim15, TIM_CHANNEL_1, 0, 0);
+// }
+
+// static void playTune(void) {
+
+// 	playNote(740, 370, 297);
+// 	// HAL_Delay(50);
+// 	playNote(660, 330, 297);
+// }
+
+
+
 
 int main(void)
 {
@@ -60,13 +102,171 @@ int main(void)
 	config.setup(&hGS_CAN);
 	timer_init();
 
+	MX_TIM15_Init();
+	if(HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1) != HAL_OK){
+		Error_Handler();
+	}
+	// if(HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_2) != HAL_OK){
+	// 	Error_Handler();
+	// }
+	// if(HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_3) != HAL_OK){
+	// 	Error_Handler();
+	// }
+	// if(HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_4) != HAL_OK){
+	// 	Error_Handler();
+	// }
+	
+
 	INIT_LIST_HEAD(&hGS_CAN.list_frame_pool);
 	INIT_LIST_HEAD(&hGS_CAN.list_to_host);
 
 	for (unsigned i = 0; i < ARRAY_SIZE(hGS_CAN.msgbuf); i++) {
 		list_add_tail(&hGS_CAN.msgbuf[i].list, &hGS_CAN.list_frame_pool);
 	}
+		//E
+		setPWM(htim15, TIM_CHANNEL_1, 660.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0);
+		HAL_Delay(10);
+		//D
+		setPWM(htim15, TIM_CHANNEL_1, 587.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0);
+		HAL_Delay(10);
+		//E
+		setPWM(htim15, TIM_CHANNEL_1, 660.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0);
+		HAL_Delay(10);
 
+		setPWM(htim15, TIM_CHANNEL_1, 587.0);
+		HAL_Delay(149);
+		setPWM(htim15, TIM_CHANNEL_1, 0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 660.0);
+		HAL_Delay(297 + 149);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 587.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 494.0);
+		HAL_Delay(297 * 2);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 587.0);
+		HAL_Delay(297 * 3);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 494.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297 * 2);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 660.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 587.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(50);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 784.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(297 * 2);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 784.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297 * 2 + 149);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(149);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 784.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(297 * 2);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 784.0);
+		HAL_Delay(297);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+		setPWM(htim15, TIM_CHANNEL_1, 740.0);
+		HAL_Delay(297 * 2 + 149);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(10);
+
+
+		HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); 
+		
 	for (unsigned int i = 0; i < ARRAY_SIZE(hGS_CAN.channels); i++) {
 		const struct BoardChannelConfig *channel_config = &config.channels[i];
 		const struct LEDConfig *led_config = channel_config->leds;
@@ -86,6 +286,10 @@ int main(void)
 			HAL_Delay(50);
 			HAL_GPIO_TogglePin(led_config[LED_TX].port, led_config[LED_TX].pin);
 		}
+
+		
+
+
 
 		led_set_mode(&channel->leds, LED_MODE_OFF);
 

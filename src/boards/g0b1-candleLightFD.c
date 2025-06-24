@@ -66,6 +66,14 @@ static void candlelightfd_setup(USBD_GS_CAN_HandleTypeDef *hcan)
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 
+	// Timer 15
+	GPIO_InitStruct.Pin = GPIO_PIN_14;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF5_TIM15;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /* LEDs */
 	HAL_GPIO_WritePin(LEDRX_GPIO_Port, LEDRX_Pin, GPIO_INIT_STATE(LEDRX_Active_High));
 	GPIO_InitStruct.Pin = LEDRX_Pin;

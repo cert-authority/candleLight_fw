@@ -347,9 +347,9 @@ THE SOFTWARE.
 	#define CONFIG_CANFD			 1
 
 #elif defined(BOARD_candleLightFD)
-	#define USBD_PRODUCT_STRING_FS	 (uint8_t*) "candleLightFD gs_usb"
-	#define USBD_MANUFACTURER_STRING (uint8_t*) "candleLightFD"
-	#define DFU_INTERFACE_STRING_FS	 (uint8_t*) "candleLightFD firmware upgrade interface"
+	#define USBD_PRODUCT_STRING_FS	 (uint8_t*) "candleLightGNX gs_usb"
+	#define USBD_MANUFACTURER_STRING (uint8_t*) "candleLightGNX"
+	#define DFU_INTERFACE_STRING_FS	 (uint8_t*) "candleLightGNX firmware upgrade interface"
 
 	#define TIM2_CLOCK_SPEED		 64000000
 

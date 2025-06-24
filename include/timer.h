@@ -28,5 +28,8 @@ THE SOFTWARE.
 
 #include <stdint.h>
 
+
 void timer_init(void);
 uint32_t timer_get(void);
+void MX_TIM15_Init(void);
+void Error_Handler(void);

@@ -380,7 +380,29 @@ HAL_StatusTypeDef HAL_TIM_Base_DeInit(TIM_HandleTypeDef *htim)
 __weak void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
 {
   /* Prevent unused argument(s) compilation warning */
-  UNUSED(htim);
+
+   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+
+    /* USER CODE BEGIN TIM15_MspInit 0 */
+
+    /* USER CODE END TIM15_MspInit 0 */
+
+  /** Initializes the peripherals clocks
+  */
+    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_TIM15;
+    PeriphClkInit.Tim15ClockSelection = RCC_TIM15CLKSOURCE_PCLK1;
+    HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+    // if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+    // {
+    //   Error_Handler();
+    // }
+
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM15_CLK_ENABLE();
+    /* USER CODE BEGIN TIM15_MspInit 1 */
+
+    /* USER CODE END TIM15_MspInit 1 */
+//  UNUSED(htim);
 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_Base_MspInit could be implemented in the user file
