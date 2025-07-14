@@ -66,9 +66,10 @@ float note_B4 = 493.88;
 int half = 1192;					//ms
 int dotted_4th = 894;
 int quarter = 596;
-int eighth = 298;
 int dotted_8th = 447;
+int eighth = 298;
 int sixteenth = 149;
+int delay = 10;
 
 uint16_t freqToPeriod(float freq) {
 	float temp = 1/freq;
@@ -109,153 +110,113 @@ void setPWM(TIM_HandleTypeDef timer, uint32_t channel, float freq)
 
 void kendrick(void)
 {
-/* 		//E (297ms is 1/8 note)
-		setPWM(htim15, TIM_CHANNEL_1, note_E5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0);
-		HAL_Delay(10);
-		//D
-		setPWM(htim15, TIM_CHANNEL_1, note_D5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0);
-		HAL_Delay(10);
-		//E
-		setPWM(htim15, TIM_CHANNEL_1, note_E5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0);
-		HAL_Delay(10);
+	//intro (may want to revisit)
+	setPWM(htim15, TIM_CHANNEL_1, note_E5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0);
+	HAL_Delay(delay);
 
-		setPWM(htim15, TIM_CHANNEL_1, note_D5);
-		HAL_Delay(sixteenth);
-		setPWM(htim15, TIM_CHANNEL_1, 0);
-		HAL_Delay(10);
+	setPWM(htim15, TIM_CHANNEL_1, note_D5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0);
+	HAL_Delay(delay);
 
-		setPWM(htim15, TIM_CHANNEL_1, note_E5);
+	setPWM(htim15, TIM_CHANNEL_1, note_E5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_D5);
+	HAL_Delay(sixteenth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_E5);
+	HAL_Delay(dotted_8th - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_D5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_B4);
+	HAL_Delay(quarter - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_D5);
+	HAL_Delay(dotted_4th - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_B4);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+	HAL_Delay(quarter - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay); 
+
+	setPWM(htim15, TIM_CHANNEL_1, note_E5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	setPWM(htim15, TIM_CHANNEL_1, note_D5);
+	HAL_Delay(eighth - delay);
+	setPWM(htim15, TIM_CHANNEL_1, 0.0);
+	HAL_Delay(delay);
+
+	for (uint8_t i = 0; i < 2; i++)
+	{
+		//main melody 1st time thru (short final note)
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_G5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+		HAL_Delay(eighth);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(half);
+
+		//main melody 2nd time thru (long final note)
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_G5);
+		HAL_Delay(eighth - delay);
+		setPWM(htim15, TIM_CHANNEL_1, 0.0);
+		HAL_Delay(delay);
+
+		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
 		HAL_Delay(dotted_8th);
 		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
+		HAL_Delay(half - sixteenth);
+	}
 
-		setPWM(htim15, TIM_CHANNEL_1, note_D5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_B4);
-		HAL_Delay(quarter);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_D5);
-		HAL_Delay(dotted_4th);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_B4);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(quarter);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_E5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_D5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(50);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_G5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(297 * 2);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_G5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10);
-
-		setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-		HAL_Delay(eighth);
-		setPWM(htim15, TIM_CHANNEL_1, 0.0);
-		HAL_Delay(10); */
-		
-		for (uint8_t i = 0; i < 2; i++)
-		{
-			//main melody 1st time thru (short final note)
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_G5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(eighth);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(half);
-
-			//main melody 2nd time thru (long final note)
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_G5);
-			HAL_Delay(eighth - 5);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(5);
-
-			setPWM(htim15, TIM_CHANNEL_1, note_Fsharp5);
-			HAL_Delay(quarter);
-			setPWM(htim15, TIM_CHANNEL_1, 0.0);
-			HAL_Delay(half);
-		}
-
-		HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); 
+	HAL_TIM_PWM_Stop(&htim15, TIM_CHANNEL_1); 
 }
 
 int main(void)
