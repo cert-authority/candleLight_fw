@@ -56,20 +56,20 @@ static USBD_HandleTypeDef hUSB = {0};
 TIM_HandleTypeDef htim15;
 
 //note frequencies
-float note_G5 = 783.99;				//hz
-float note_Fsharp5 = 739.99;
-float note_E5 = 659.26;
-float note_D5 = 587.33;
-float note_B4 = 493.88;
+const float note_G5 = 783.99;				//hz
+const float note_Fsharp5 = 739.99;
+const float note_E5 = 659.26;
+const float note_D5 = 587.33;
+const float note_B4 = 493.88;
 
 //note lengths
-int half = 1192;					//ms
-int dotted_4th = 894;
-int quarter = 596;
-int dotted_8th = 447;
-int eighth = 298;
-int sixteenth = 149;
-int delay = 10;
+const int half = 1192;					//ms
+const int dotted_4th = 894;
+const int quarter = 596;
+const int dotted_8th = 447;
+const int eighth = 298;
+const int sixteenth = 149;
+const int delay = 10;
 
 uint16_t freqToPeriod(float freq) {
 	float temp = 1/freq;
@@ -265,12 +265,14 @@ int main(void)
 		can_disable(channel);
 	}
 
+	kendrick();
+
 	USBD_Init(&hUSB, (USBD_DescriptorsTypeDef*)&FS_Desc, DEVICE_FS);
 	USBD_RegisterClass(&hUSB, &USBD_GS_CAN);
 	USBD_GS_CAN_Init(&hGS_CAN, &hUSB);
 	USBD_Start(&hUSB);
 
-	kendrick();
+	//kendrick();
 
 	while (1) {
 		for (unsigned int i = 0; i < ARRAY_SIZE(hGS_CAN.channels); i++) {
